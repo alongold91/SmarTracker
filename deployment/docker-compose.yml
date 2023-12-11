@@ -8,8 +8,9 @@ services:
       - ./db_data/:/data/db/
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: smartrackadmin
-      MONGO_INITDB_ROOT_PASSWORD: uX5CHs7yrRMVBDQLASnTewqjg4
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    command: mongod  
 
 
   mongo-express:
@@ -18,10 +19,10 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: smartrackadmin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: uX5CHs7yrRMVBDQLASnTewqjg4
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
       ME_CONFIG_MONGODB_SERVER: mongodb
-      ME_CONFIG_MONGODB_URL: mongodb://smartrackadmin:uX5CHs7yrRMVBDQLASnTewqjg4@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongo:27017/
 
 volumes:
   dbdata6:
