@@ -19,7 +19,13 @@ const UserSchema: Schema<UserDocument> = new Schema({
     required: function () {
       // Make email required only if interestedInWarnings is true
       return this.interestedInWarnings === true;
-    }
+    },
+    validate: {
+      validator: function(this: UserDocument, v: string) {
+        return Boolean(v) && Boolean(this.interestedInWarnings);
+      },
+      message: () => 'Email is not supposed to be received when you are not interested in notification emails',
+    },
   }
 });
 
