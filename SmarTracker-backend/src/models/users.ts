@@ -24,7 +24,7 @@ const UserSchema: Schema<UserDocument> = new Schema({
       validator: function(this: UserDocument, v: string) {
         return Boolean(v) && Boolean(this.interestedInWarnings);
       },
-      message: () => 'Email is not supposed to be received when you are not interested in notification emails',
+      message: 'Email is not supposed to be received when you are not interested in notification emails',
     },
   }
 });
