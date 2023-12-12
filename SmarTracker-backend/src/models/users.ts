@@ -1,32 +1,29 @@
-import { boolean, string } from 'joi';
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface User {
-  userName: string;
+  email: string;
   password: string;
+  currency: string;
   interestedInWarnings: boolean;
-  email?: string;
+  warningPercent?: number;
 }
 
 export interface UserDocument extends User, Document {}
 
-const UserSchema: Schema<UserDocument> = new Schema({
-  userName: { type: String, required: true },
-  password: { type: String, required: true },
-  interestedInWarnings: { type: Boolean, required: true },
-  email: {
-    type: String,
-    required: function () {
-      // Make email required only if interestedInWarnings is true
-      return this.interestedInWarnings === true;
-    },
-    validate: {
-      validator: function(this: UserDocument, v: string) {
-        return Boolean(v) && Boolean(this.interestedInWarnings);
-      },
-      message: 'Email is not supposed to be received when you are not interested in notification emails',
-    },
-  }
-});
+const UserSchema: Schema<UserDocument> = new Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    currency: { type: String, required: true },
+    interestedInWarnings: { type: Boolean, required: true },
+    warningPercent: {
+      type: Number,
+      required: function () {
+        // Make warningPercent required only if interestedInWarnings is true
+        return this.interestedInWarnings === true;
+      }
+    }
+  },
+);
 
-export const UserModel = mongoose.model<UserDocument>('User', UserSchema);
+export const UserModel = mongoose.model<UserDocument>('Users', UserSchema);

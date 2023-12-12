@@ -1,19 +1,20 @@
 import express from 'express';
 import {
- createUser
-  // deleteAuthor,
-  // readAll,
-  // readAuthor,
-  // updateAuthor
-} from '../controllers/user';
+ createUser,
+ readUser,
+ readAllUsers,
+ updateUser,
+ deleteUser
+} from '../controllers/users';
 // import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 
 const router = express.Router();
 router.post('/create', createUser);
 // router.post('/create', ValidateSchema(Schemas.author.create), createAuthor);
-// router.get('/get/:authorId', readAuthor);
-// router.get('/get', readAll);
+router.get('/:userId', readUser);
+router.get('/', readAllUsers);
 // router.patch('/update/:authorId', ValidateSchema(Schemas.author.update), updateAuthor);
-// router.delete('/delete/:authorId', deleteAuthor);
+router.patch('/update/:userId', updateUser)
+router.delete('/delete/:userId', deleteUser);
 
-export = router;
+export const usersRouter = router;

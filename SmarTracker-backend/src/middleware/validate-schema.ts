@@ -16,6 +16,14 @@
 //   };
 // };
 
+ // TODO: use this logic -> validate: {
+    //   validator: function(this: UserDocument, v: string) {
+    //     return Boolean(v) && Boolean(this.interestedInWarnings);
+    //   },
+    //   message:
+    //     'percentage to warn about is not supposed to be received when you are not interested in notification emails'
+    // }
+
 // export const Schemas = {
 //   author: {
 //     create: Joi.object<IAuthor>({
