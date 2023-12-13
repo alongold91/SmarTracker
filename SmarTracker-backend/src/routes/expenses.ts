@@ -6,16 +6,14 @@ import {
   deleteExpense,
   updateExpense
 } from '../controllers/expenses';
-// import { Schemas, ValidateSchema } from '../middleware/validate-schema';
-// import { Schemas, ValidateJoi } from '../middleware/Joi';
+import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 
 const router = express.Router();
 
-router.post('/create', createExpense);
+router.post('/create', ValidateSchema(Schemas.expense.create), createExpense);
 router.get('/:expenseId', readExpense);
 router.get('/', readAllExpenses);
-// router.patch('/update/:bookId', ValidateSchema(Schemas.book.update), controller.updateBook);
-router.patch('/update/:expenseId', updateExpense);
+router.patch('/update/:expenseId', ValidateSchema(Schemas.expense.update), updateExpense);
 router.delete('/delete/:expenseId', deleteExpense);
 
 export const expensesRouter = router;

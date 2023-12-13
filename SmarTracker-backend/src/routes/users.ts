@@ -6,15 +6,13 @@ import {
  updateUser,
  deleteUser
 } from '../controllers/users';
-// import { Schemas, ValidateSchema } from '../middleware/validate-schema';
+import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 
 const router = express.Router();
-router.post('/create', createUser);
-// router.post('/create', ValidateSchema(Schemas.author.create), createAuthor);
+router.post('/create', ValidateSchema(Schemas.user.create), createUser);
 router.get('/:userId', readUser);
 router.get('/', readAllUsers);
-// router.patch('/update/:authorId', ValidateSchema(Schemas.author.update), updateAuthor);
-router.patch('/update/:userId', updateUser)
+router.patch('/update/:userId', ValidateSchema(Schemas.user.update), updateUser);
 router.delete('/delete/:userId', deleteUser);
 
 export const usersRouter = router;
