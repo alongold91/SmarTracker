@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,700&family=Roboto+Slab:wght@300;400;500;700;800&family=Zilla+Slab:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+:root {
+  font-family: 'Roboto Slab', 'Nunito Sans', serif;
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --background-primary: #FFFDD1;
+  --background-secondary: #219653;
+  --text-main-color: #2B2B28;
+  --text-light-color: rgba(99, 99, 92, 0.8);
+  --text-dark-color: #01011B;
+  --text-extra-bold: 800;
+  --text-bold: 700;
+  --text-medium: 500;
+  --text-regular: 400;
+  --text-light: 300;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html, body {
+  font-size: 16px;
+}
+
+/*Global Typography Section */
+h1 {
+  font-size: 6rem;
+  font-weight: var(--text-extra-bold);
+}
+
+h2 {
+  font-size: 3.75rem;
+  font-weight: var(--text-bold);
+}
+
+h3 {
+  font-size: 3.063rem;
+  font-weight: var(--text-bold);
+}
+
+h4 {
+  font-size: 2.125rem;
+  font-weight: var(--text-bold);
+}
+
+h5 {
+  font-size: 1.5rem;
+  font-weight: var(--text-medium);
+}
+
+h6 {
+  font-size: 1.25rem;
+  font-weight: var(--text-medium);
+}
+
+.body2 {
+  font-size: 0.875rem;
+}
+
+.caption {
+  font-size: 0.75rem;
+}
+/*End of Global Typography Section */
+
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+
+/* @media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */
