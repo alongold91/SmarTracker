@@ -1,8 +1,8 @@
+import SummaryPage from "./views/summary-page/SummaryPage"
+
 function App() {
   return (
-    <p>
-      welcome
-    </p>
+    <SummaryPage />
   )
 }
 

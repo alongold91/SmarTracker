@@ -1,0 +1,10 @@
+.flexContainer  {
+    background-color: var(--background-secondary);
+    color: var(--text-contrast-color);
+    box-shadow: var(--shadow-light);
+    padding: 1.188rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    text-align: start;
+}
