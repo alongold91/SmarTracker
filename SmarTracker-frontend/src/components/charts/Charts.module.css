@@ -1,0 +1,8 @@
+/*Bar Chart */
+.barChartTooltip {
+  background-color: rgba(0, 27, 36, 0.75);
+  color: var(--text-contrast-color);
+  height: 3rem;
+  width: 7rem;
+  box-shadow: var(--shadow-light);
+}

@@ -26,7 +26,7 @@ const SummaryPage = () => {
           <PieChart />
         </div>
         <h5 style={{ textAlign: 'center' }}>2023 Expenses by Month</h5>
-        <div style={{ height: '300px', width: '700px' }}>
+        <div style={{ height: '420px', width: '700px' }}>
           <BarChart />
         </div>
       </Flex>
