@@ -4,6 +4,7 @@ import { Flex } from 'antd';
 import style from './SummaryPage.module.css';
 import PieChart from '../../components/charts/PieChart';
 import BarChart from '../../components/charts/BarChart';
+import withTransition from '../../components/transitions/withTransition';
 
 const SummaryPage = () => {
   return (
@@ -34,4 +35,4 @@ const SummaryPage = () => {
   );
 };
 
-export default SummaryPage;
+export default withTransition(SummaryPage);

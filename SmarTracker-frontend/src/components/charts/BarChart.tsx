@@ -50,6 +50,7 @@ const BarChart = () => {
         'November',
         'December'
       ]}
+      animate={false}
       indexBy='year'
       padding={0.02}
       margin={{ top: 50, right: 100, bottom: 50, left: 100 }}
