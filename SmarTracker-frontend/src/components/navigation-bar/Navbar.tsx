@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Navbar.module.css';
+import {Link} from 'react-router-dom';
 import { Flex } from 'antd';
 const Navbar = () => {
   return (
@@ -7,10 +8,9 @@ const Navbar = () => {
     <nav className={styles.nav}>
       <h5>Logo</h5>
      <Flex component='ul' gap='1.875rem' align='center'>
-         <li><a href='google.com'>Summary</a></li>
-         <li><a href='google.com'>Table</a></li>
-         <li><a href='google.com'>User Settings</a></li>
-         <li><a href='google.com'>Create a new expense</a></li>
+         <li><Link to='/'>Summary</Link></li>
+         <li><Link to='/Expenses'>Table</Link></li>
+         <li><Link to='uers-settings'>User Settings</Link></li>
      </Flex>
      <p>Create a new expense</p>
     </nav>

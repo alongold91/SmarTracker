@@ -1,18 +1,18 @@
-.nav{
-    height: 2.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    background: linear-gradient(90deg, rgba(105,107,5,0.5466561624649859) 0%, rgba(236,242,22,0.8155637254901961) 100%);
-    color: var(--text-light-color);
-    font-weight: var(--text-medium);
-    box-shadow: var(--shadow-light);
+.nav {
+  height: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(19deg, #219653 0%, #38b71a 100%);
+  color: var(--text-light-color);
+  font-weight: var(--text-medium);
+  box-shadow: var(--shadow-light);
 }
 .nav a {
-    color: var(--text-dark-color);
+  color: var(--text-dark-color);
 }
 
 .nav a:hover {
-    color: rgba(var(--text-dark-color), 0.6);
+  color: rgba(var(--text-dark-color), 0.6);
 }
