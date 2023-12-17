@@ -1,7 +1,7 @@
 .nav{
     height: 2.5rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
     background: linear-gradient(90deg, rgba(105,107,5,0.5466561624649859) 0%, rgba(236,242,22,0.8155637254901961) 100%);

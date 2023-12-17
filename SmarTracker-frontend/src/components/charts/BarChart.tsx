@@ -80,7 +80,6 @@ const BarChart = () => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'Year',
         legendPosition: 'middle',
         legendOffset: 32,
         truncateTickAt: 0
@@ -140,7 +139,7 @@ const BarChart = () => {
         </Flex>
       )}
       role='application'
-      ariaLabel='Nivo bar chart demo'
+      ariaLabel='Yearly expenses'
       barAriaLabel={(e) =>
         e.id + ': ' + e.formattedValue + ' in year: ' + e.indexValue
       }

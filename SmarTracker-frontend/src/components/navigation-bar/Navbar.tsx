@@ -5,13 +5,14 @@ const Navbar = () => {
   return (
     <header>
     <nav className={styles.nav}>
-     <Flex component='ul' gap='1.875rem' align='center' className={styles.ul}>
+      <h5>Logo</h5>
+     <Flex component='ul' gap='1.875rem' align='center'>
          <li><a href='google.com'>Summary</a></li>
          <li><a href='google.com'>Table</a></li>
          <li><a href='google.com'>User Settings</a></li>
-         <li><a href='google.com'>Create a variable expense</a></li>
-         <li><a href='google.com'>Create a fix expense</a></li>
+         <li><a href='google.com'>Create a new expense</a></li>
      </Flex>
+     <p>Create a new expense</p>
     </nav>
  </header>
   )
