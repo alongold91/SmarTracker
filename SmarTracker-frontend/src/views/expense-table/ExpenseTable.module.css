@@ -1,0 +1,30 @@
+.table {
+  border-collapse: collapse;
+  width: 75%;
+  margin: 3% 12.5%;
+  border: 1px solid var(--text-dark-color);
+  box-shadow: var(--shadow-light);
+}
+
+.table td,
+.table th {
+  text-align: left;
+  padding: 1rem;
+}
+
+.table tr:nth-child(even) {
+  background-color: var(--background-secondary);
+  color: var(--text-contrast-color);
+}
+
+.table button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  height: 1rem;
+}
+
+.more-info-icon {
+    font-size: 1.3rem;
+}
