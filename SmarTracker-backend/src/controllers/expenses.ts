@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { ExpenseModel, Expense } from '../models/expenses';
+import { ExpenseModel } from '../models/expenses';
+import { Expense } from '@common/src/interfaces/expenses';
 
 const createExpense = async (
   req: Request,
@@ -33,7 +34,7 @@ const createExpense = async (
 
     return res.status(201).json({ expense: savedExpense });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({ error });
   }
 };
@@ -102,7 +103,9 @@ const deleteExpense = async (
   try {
     const expense = await ExpenseModel.findByIdAndDelete(expenseId);
     if (expense) {
-      return res.status(201).json({ user: expense, message: 'Expense deleted' });
+      return res
+        .status(201)
+        .json({ user: expense, message: 'Expense deleted' });
     }
     return res.status(404).json({ message: 'Expense not found' });
   } catch (error) {

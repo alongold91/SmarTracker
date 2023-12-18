@@ -1,14 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-
-export interface Expense {
-  userId: string;
-  title?: string;
-  date: number;
-  sum: number;
-  category: string;
-  description?: string;
-  receiptImagePath?: string;
-}
+import { Expense } from '@common/src/interfaces/expenses';
 
 export interface ExpenseDocument extends Expense, Document {}
 

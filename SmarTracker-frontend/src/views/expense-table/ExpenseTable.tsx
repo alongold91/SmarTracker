@@ -3,8 +3,15 @@ import withTransition from '../../components/transitions/withTransition';
 import style from './ExpenseTable.module.css';
 import { MoreOutlined } from '@ant-design/icons';
 import MoreInfoMenu from '../../components/more-info-menu/MoreInfoMenu';
+import { User } from '@common/src/interfaces/users';
 
 const ExpenseTable = () => {
+  const user: User = {
+    email: 'shalom@gmail.com',
+    currency: 'ils',
+    interestedInWarnings: false,
+    password: '124'
+  };
   return (
     <table className={style.table}>
       <thead>
@@ -18,9 +25,9 @@ const ExpenseTable = () => {
       </thead>
       <tbody>
         <tr>
-          <td>Coca cola can</td>
-          <td>12.99&#8362;</td>
-          <td>03/12/2023 09:05am</td>
+          <td>{user.email}</td>
+          <td>{user.currency}</td>
+          <td>{user.password}</td>
           <td>Credit card</td>
           <td>
             <button>

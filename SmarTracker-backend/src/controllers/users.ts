@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { User, UserModel } from '../models/users';
+import { User } from '@common/src/interfaces/users';
+import { UserModel } from '../models/users';
 
 const createUser = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
     const userParams: User = req.body;
@@ -30,7 +31,7 @@ const createUser = async (
 
 const readUser = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
     const userId = req.params.userId;
@@ -48,7 +49,7 @@ const readUser = async (
 };
 const readAllUsers = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
     const users = await UserModel.find().select('-__v');
@@ -60,7 +61,7 @@ const readAllUsers = async (
 
 const updateUser = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
     const userId = req.params.userId;
@@ -84,7 +85,7 @@ const updateUser = async (
 
 const deleteUser = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   const userId = req.params.userId;
 
@@ -100,4 +101,3 @@ const deleteUser = async (
 };
 
 export { createUser, readAllUsers, readUser, updateUser, deleteUser };
-

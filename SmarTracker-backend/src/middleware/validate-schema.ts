@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi, { ObjectSchema } from 'joi';
 import Logging from '../library/Logging';
-import { Expense } from '../models/expenses';
-import { User } from '../models/users';
+import { Expense } from '@common/src/interfaces/expenses';
+import { User } from '@common/src/interfaces/users';
 
 export const ValidateSchema = (schema: ObjectSchema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
