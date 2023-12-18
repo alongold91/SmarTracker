@@ -100,6 +100,20 @@ export const Schemas = {
         'any.required': 'Sum field is required',
         'number.base': 'Sum needs to be a number'
       }),
+      paymentMethod: Joi.string()
+        .required()
+        .valid(
+          'Bank transfer',
+          'Cash',
+          'Credit card',
+          'Check',
+          'Alternative payment',
+          'Digital payment',
+          'Direct deposit',
+          'Digital wallet',
+          'Cryptocurrency',
+          'Mobile payment'
+        ),
       category: Joi.string().required().messages({
         'any.required': 'Category field is required'
       }),
@@ -116,6 +130,20 @@ export const Schemas = {
         'any.required': 'Sum field is required',
         'number.base': 'Sum needs to be a number'
       }),
+      paymentMethod: Joi.string()
+        .required()
+        .valid(
+          'Bank transfer',
+          'Cash',
+          'Credit card',
+          'Check',
+          'Alternative payment',
+          'Digital payment',
+          'Direct deposit',
+          'Digital wallet',
+          'Cryptocurrency',
+          'Mobile payment'
+        ),
       category: Joi.string().required().messages({
         'any.required': 'Category field is required'
       }),

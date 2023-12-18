@@ -1,17 +1,21 @@
-import React from 'react';
+import { useGetExpensesByUserIdQuery } from '../../app-state/queries/expensesApiSlice';
+import MoreInfoMenu from '../../components/more-info-menu/MoreInfoMenu';
 import withTransition from '../../components/transitions/withTransition';
 import style from './ExpenseTable.module.css';
-import { MoreOutlined } from '@ant-design/icons';
-import MoreInfoMenu from '../../components/more-info-menu/MoreInfoMenu';
-import { User } from '@common/src/interfaces/users';
 
 const ExpenseTable = () => {
-  const user: User = {
-    email: 'shalom@gmail.com',
-    currency: 'ils',
-    interestedInWarnings: false,
-    password: '124'
-  };
+  const { data, isLoading, isError } = useGetExpensesByUserIdQuery(
+    '6579ebefb0d6a56203f28971'
+  );
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error</p>;
+  }
+
   return (
     <table className={style.table}>
       <thead>
@@ -24,61 +28,31 @@ const ExpenseTable = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>{user.email}</td>
-          <td>{user.currency}</td>
-          <td>{user.password}</td>
-          <td>Credit card</td>
-          <td>
-            <button>
-              <MoreOutlined className={style['more-info-icon']} />
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Coca cola can</td>
-          <td>12.99&#8362;</td>
-          <td>03/12/2023 09:05am</td>
-          <td>Credit card</td>
-          <td>
-            <button>
-              <MoreOutlined className={style['more-info-icon']} />
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Coca cola can</td>
-          <td>12.99&#8362;</td>
-          <td>03/12/2023 09:05am</td>
-          <td>Credit card</td>
-          <td>
-            <button>
-              <MoreOutlined className={style['more-info-icon']} />
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Coca cola can</td>
-          <td>12.99&#8362;</td>
-          <td>03/12/2023 09:05am</td>
-          <td>Credit card</td>
-          <td>
-            <MoreInfoMenu
-              items={[
-                {
-                  label: 'Edit',
-                  key: '0',
-                  onClick: (e) => console.log(e)
-                },
-                {
-                  label: 'Delete',
-                  key: '1',
-                  onClick: (e) => console.log(e)
-                }
-              ]}
-            />
-          </td>
-        </tr>
+        {data &&
+          data.map((expense) => (
+            <tr>
+              <td>{expense.title}</td>
+              <td>{expense.sum}&#8362;</td>
+              <td>{expense.date}</td>
+              <td>{expense.paymentMethod}</td>
+              <td>
+                <MoreInfoMenu
+                  items={[
+                    {
+                      label: 'Edit',
+                      key: '0',
+                      onClick: (e) => console.log(e)
+                    },
+                    {
+                      label: 'Delete',
+                      key: '1',
+                      onClick: (e) => console.log(e)
+                    }
+                  ]}
+                />
+              </td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );

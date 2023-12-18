@@ -14,6 +14,7 @@ const createExpense = async (
       title,
       date,
       sum,
+      paymentMethod,
       category,
       description,
       receiptImagePath
@@ -25,6 +26,7 @@ const createExpense = async (
       title,
       date,
       sum,
+      paymentMethod,
       category,
       description,
       receiptImagePath
@@ -113,10 +115,24 @@ const deleteExpense = async (
   }
 };
 
+const getExpensesByUserId = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  const userId = req.params.userId;
+  try {
+    const expenses: Expense[] = await ExpenseModel.find({ userId });
+    return res.status(201).json(expenses);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
 export {
   createExpense,
   readExpense,
   readAllExpenses,
   updateExpense,
-  deleteExpense
+  deleteExpense,
+  getExpensesByUserId
 };
