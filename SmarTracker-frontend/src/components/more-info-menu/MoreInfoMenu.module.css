@@ -1,0 +1,11 @@
+.menu-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    height: 1rem;
+  }
+  
+  .more-info-icon {
+      font-size: 1.3rem;
+  }
