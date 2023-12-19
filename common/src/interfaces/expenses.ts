@@ -10,6 +10,7 @@ type PaymentMethod =
   | 'Cryptocurrency'
   | 'Mobile payment';
 export interface Expense {
+  _id: string;
   userId: string;
   title?: string;
   date: number;

@@ -41,7 +41,7 @@ const ExpenseTable = () => {
                     {
                       label: 'Edit',
                       key: '0',
-                      onClick: (e) => console.log(e)
+                      onClick: (e) => console.log(expense._id)
                     },
                     {
                       label: 'Delete',
