@@ -17,7 +17,7 @@ const ExpenseSchema = new Schema({
   paymentMethod: {type: String, required: true},
   category: { type: String, required: true },
   description: { type: String, required: false },
-  receiptImagePath: { type: String, required: false }
+  receiptImagePath: { type: String, required: false },
 });
 
 ExpenseSchema.index({ category: 1 }, { unique: false });

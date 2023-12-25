@@ -6,7 +6,7 @@ import {
   readAllExpenses,
   readExpense,
   updateExpense
-} from '../controllers/expenses';
+} from '../controllers/expensesController';
 import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 
 const router = express.Router();

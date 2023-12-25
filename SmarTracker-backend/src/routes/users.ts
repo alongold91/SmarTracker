@@ -1,15 +1,17 @@
 import express from 'express';
 import {
- createUser,
+ signup,
+ login,
  readUser,
  readAllUsers,
  updateUser,
  deleteUser
-} from '../controllers/users';
+} from '../controllers/usersController';
 import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 
 const router = express.Router();
-router.post('/create', ValidateSchema(Schemas.user.create), createUser);
+router.post('/signup', ValidateSchema(Schemas.user.create), signup);
+router.post('/login', login);
 router.get('/:userId', readUser);
 router.get('/', readAllUsers);
 router.patch('/update/:userId', ValidateSchema(Schemas.user.update), updateUser);

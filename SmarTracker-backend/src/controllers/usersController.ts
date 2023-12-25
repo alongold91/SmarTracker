@@ -2,8 +2,13 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { User } from '@common/src/interfaces/users';
 import { UserModel } from '../models/users';
+import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-const createUser = async (
+dotenv.config();
+
+const signup = async (
   req: Request,
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
@@ -18,12 +23,66 @@ const createUser = async (
       password,
       currency,
       interestedInWarnings,
-      warningPercent
+      warningPercent,
+      refreshToken: 'dummyDataThatNeedsToBeDeletedInFuture'
     });
 
     const savedUser = await user.save();
 
     return res.status(201).json({ user: savedUser });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
+const login = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  console.log('in login')
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: 'email and password are required.' });
+    }
+
+    const user = await UserModel.findOne({ email });
+
+    if (user) {
+      const match: boolean = await bcrypt.compare(password, user.password);
+      // If passwords have matched
+      if (match) {
+        const accessToken = jwt.sign(
+          { _id: user._id },
+          process.env.ACCESS_TOKEN_SECRET ?? '',
+          { expiresIn: '30s' }
+        );
+        const refreshToken = jwt.sign(
+          { _id: user._id },
+          process.env.REFRESH_TOKEN_SECRET ?? '',
+          { expiresIn: '1d' }
+        );
+
+         user.set({
+          ...user,
+          refreshToken
+         })
+
+        res.cookie('jwt', refreshToken, {
+          httpOnly: true,
+          sameSite: 'none',
+          secure: true,
+          maxAge: 24 * 60 * 60 * 1000 // max age is 24 hours
+        });
+
+        return res.status(200).json({ accessToken });
+      }
+      return res.status(500).json({ message: 'Incorrect password' });
+    }
+    return res.status(500).json({ message: 'Incorrect email' });
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -100,4 +159,4 @@ const deleteUser = async (
   }
 };
 
-export { createUser, readAllUsers, readUser, updateUser, deleteUser };
+export { signup, login, readAllUsers, readUser, updateUser, deleteUser };
