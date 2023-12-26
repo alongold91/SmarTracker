@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import { User } from '@common/src/interfaces/users';
-import { UserModel } from '../models/users';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import { UserModel } from '../models/users';
 
 dotenv.config();
 
@@ -17,14 +17,17 @@ const signup = async (
     const { email, password, currency, interestedInWarnings, warningPercent } =
       userParams;
 
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, salt);
+
     const user = new UserModel({
       _id: new mongoose.Types.ObjectId(),
       email,
-      password,
+      password: hashedPassword,
       currency,
       interestedInWarnings,
       warningPercent,
-      refreshToken: 'dummyDataThatNeedsToBeDeletedInFuture'
+      refreshToken: ''
     });
 
     const savedUser = await user.save();
@@ -39,7 +42,6 @@ const login = async (
   req: Request,
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
-  console.log('in login')
   try {
     const { email, password } = req.body;
 
@@ -50,6 +52,7 @@ const login = async (
     }
 
     const user = await UserModel.findOne({ email });
+    console.log('password: ' + password + ' user password' + user!.password)
 
     if (user) {
       const match: boolean = await bcrypt.compare(password, user.password);
@@ -66,15 +69,14 @@ const login = async (
           { expiresIn: '1d' }
         );
 
-         user.set({
-          ...user,
-          refreshToken
-         })
+        user.refreshToken = refreshToken;
+
+        await user.save();
 
         res.cookie('jwt', refreshToken, {
           httpOnly: true,
           sameSite: 'none',
-          secure: true,
+          secure: false,
           maxAge: 24 * 60 * 60 * 1000 // max age is 24 hours
         });
 
@@ -87,6 +89,36 @@ const login = async (
     return res.status(500).json({ error });
   }
 };
+
+const refreshToken = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>> | undefined> => {
+  const cookies = req.cookies;
+
+  console.log(req.cookies);
+
+  if (!cookies?.jwt) return res.sendStatus(401);
+  const refreshToken = cookies.jwt;
+
+  const foundUser = await UserModel.findOne({ refreshToken });
+
+  if (!foundUser) return res.sendStatus(403); //Forbidden
+
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET ?? '', (err: any, decoded: any) => {
+    if (err || foundUser._id !== decoded._id) {
+      return res.sendStatus(403);
+    }
+    const newAccessToken = jwt.sign(
+      { username: decoded.username },
+      process.env.ACCESS_TOKEN_SECRET ?? '',
+      { expiresIn: '30s' }
+    );
+    return res.json({ newAccessToken });
+  });
+};
+
 
 const readUser = async (
   req: Request,
@@ -159,4 +191,5 @@ const deleteUser = async (
   }
 };
 
-export { signup, login, readAllUsers, readUser, updateUser, deleteUser };
+export { deleteUser, login, refreshToken, readAllUsers, readUser, signup, updateUser };
+

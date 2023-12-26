@@ -1,10 +1,11 @@
-import express from 'express';
+import express, { application } from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 import { usersRouter } from './routes/users';
 import { expensesRouter } from './routes/expenses';
+import cookieParser from 'cookie-parser';
 
 const router = express();
 
@@ -39,6 +40,7 @@ const StartServer = () => {
 
   router.use(express.urlencoded({ extended: true }));
   router.use(express.json());
+  router.use(cookieParser());
 
   /** Rules of our API */
   router.use((req, res, next) => {

@@ -36,10 +36,10 @@ const createExpense = async (
 
     return res.status(201).json({ expense: savedExpense });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error });
   }
 };
+
 
 const readExpense = async (
   req: Request,
@@ -56,7 +56,6 @@ const readExpense = async (
       return res.status(404).json({ message: 'Expense not found' });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error });
   }
 };

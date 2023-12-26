@@ -3,20 +3,6 @@ import { Dropdown, MenuProps } from 'antd';
 import React from 'react';
 import style from './MoreInfoMenu.module.css';
 
-// const items: MenuProps['items'] = [
-//   {
-//     label: 'Edit',
-//     key: '0',
-//     onClick: (e) => console.log(e)
-//   },
-//   {
-//     label: 'Delete',
-//     key: '1',
-//     onClick: (e) => console.log(e)
-//   },
-
-// ];
-
 interface MoreInfoMenuProps {
 items: MenuProps['items'];
 }

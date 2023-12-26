@@ -22,22 +22,10 @@ const UserSchema: Schema<UserDocument> = new Schema(
         return this.interestedInWarnings === true;
       }
     },
-    refreshToken: {type: String, required: true}
+    refreshToken: {type: String, required: function () {
+      return typeof this.refreshToken === 'string' ? false : true
+    }}
   },
 );
-
-
-UserSchema.pre('save', async function (next) {
-  console.log('test')
-  //bcrypt.genSalt() generates a salt for us, it is an async function so we need to await for it
-  const salt = await bcrypt.genSalt()
-  this.password = await bcrypt.hash(this.password, salt);
-  /* Since we modify the password before we save it to the database 
-     when we go to the next() function (That saves the data to the database)
-     the password is going to be the hashed one and not the plain text one
-  */
-  next();
-});
-
 
 export const UserModel = mongoose.model<UserDocument>('Users', UserSchema);
