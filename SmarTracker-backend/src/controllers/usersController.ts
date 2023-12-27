@@ -52,7 +52,6 @@ const login = async (
     }
 
     const user = await UserModel.findOne({ email });
-    console.log('password: ' + password + ' user password' + user!.password)
 
     if (user) {
       const match: boolean = await bcrypt.compare(password, user.password);

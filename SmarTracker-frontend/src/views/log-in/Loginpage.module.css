@@ -1,0 +1,23 @@
+.section {
+  display: grid;
+  height: 100vh;
+}
+.form {
+  place-self: center;
+}
+.headline {
+  margin-bottom: 2rem;
+}
+.bottom-flex-container {
+  padding-top: 0.5rem;
+  margin-right: 7rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: var(--text-bold);
+}
+.bottom-flex-container button {
+  background: unset;
+  border: unset;
+  font-weight: var(--text-bold);
+  cursor: pointer;
+}
