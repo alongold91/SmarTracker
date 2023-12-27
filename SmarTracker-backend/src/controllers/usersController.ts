@@ -61,7 +61,7 @@ const login = async (
         const accessToken = jwt.sign(
           { _id: user._id },
           process.env.ACCESS_TOKEN_SECRET as string,
-          { expiresIn: '30s' }
+          { expiresIn: '5m' }
         );
         const refreshToken = jwt.sign(
           { _id: user._id },
@@ -111,7 +111,7 @@ const refreshToken = async (
     const newAccessToken = jwt.sign(
       { username: decoded.username },
       process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '30s' }
+      { expiresIn: '5m' }
     );
     return res.json({ newAccessToken });
   });
