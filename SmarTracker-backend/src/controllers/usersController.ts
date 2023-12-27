@@ -60,12 +60,12 @@ const login = async (
       if (match) {
         const accessToken = jwt.sign(
           { _id: user._id },
-          process.env.ACCESS_TOKEN_SECRET ?? '',
+          process.env.ACCESS_TOKEN_SECRET as string,
           { expiresIn: '30s' }
         );
         const refreshToken = jwt.sign(
           { _id: user._id },
-          process.env.REFRESH_TOKEN_SECRET ?? '',
+          process.env.REFRESH_TOKEN_SECRET as string,
           { expiresIn: '1d' }
         );
 
@@ -96,8 +96,6 @@ const refreshToken = async (
 ): Promise<Response<any, Record<string, any>> | undefined> => {
   const cookies = req.cookies;
 
-  console.log(req.cookies);
-
   if (!cookies?.jwt) return res.sendStatus(401);
   const refreshToken = cookies.jwt;
 
@@ -106,13 +104,13 @@ const refreshToken = async (
   if (!foundUser) return res.sendStatus(403); //Forbidden
 
 
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET ?? '', (err: any, decoded: any) => {
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, decoded: any) => {
     if (err || foundUser._id !== decoded._id) {
       return res.sendStatus(403);
     }
     const newAccessToken = jwt.sign(
       { username: decoded.username },
-      process.env.ACCESS_TOKEN_SECRET ?? '',
+      process.env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: '30s' }
     );
     return res.json({ newAccessToken });
