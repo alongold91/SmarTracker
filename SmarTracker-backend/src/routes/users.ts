@@ -6,7 +6,8 @@ import {
  readUser,
  readAllUsers,
  updateUser,
- deleteUser
+ deleteUser,
+ forgotPassword
 } from '../controllers/usersController';
 import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 
@@ -14,6 +15,7 @@ import { Schemas, ValidateSchema } from '../middleware/validate-schema';
 const router = express.Router();
 router.post('/signup', ValidateSchema(Schemas.user.create), signup);
 router.post('/login', login);
+router.post('/forgot-password', forgotPassword);
 router.get('/refreshtoken', refreshToken)
 router.get('/:userId', readUser); 
 router.get('/', readAllUsers);

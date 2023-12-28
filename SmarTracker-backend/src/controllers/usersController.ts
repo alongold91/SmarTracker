@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { UserModel } from '../models/users';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -88,6 +89,46 @@ const login = async (
     return res.status(500).json({ error });
   }
 };
+
+const forgotPassword = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>> | undefined> => {
+  const {email} = req.body
+  try {
+    const foundUser = await UserModel.findOne({ email });
+   if (!foundUser) {
+    return res.status(404).json({ message: 'User not found' });
+   }
+   const resetToken = jwt.sign({id: foundUser._id}, process.env.RESET_TOKEN_SECRET as string, {expiresIn: '5m'});
+   const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'smartrackerapp@gmail.com',
+      pass: process.env.GENERATED_APP_PASSWORD as string
+    }
+  });
+  
+  const mailOptions = {
+    from: 'smartrackerapp@gmail.com',
+    to: 'alonxtaz@gmail.com',
+    subject: 'Reset Password Link',
+    text: `http://localhost:5173/reset_password/${resetToken}`
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+      return res.status(500).json({ error });
+    } else {
+      return res.status(200).json({ resetToken });
+    }
+  });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+  
+}
 
 const refreshToken = async (
   req: Request,
@@ -188,5 +229,5 @@ const deleteUser = async (
   }
 };
 
-export { deleteUser, login, refreshToken, readAllUsers, readUser, signup, updateUser };
+export { deleteUser, login, refreshToken, readAllUsers, readUser, signup, updateUser, forgotPassword };
 
