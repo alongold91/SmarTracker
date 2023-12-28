@@ -15,8 +15,8 @@
   text-align: center;
   font-weight: var(--text-bold);
 }
-.bottom-flex-container button {
-  background: unset;
+.bottom-flex-container button{
+  background-color: unset;
   border: unset;
   font-weight: var(--text-bold);
   cursor: pointer;

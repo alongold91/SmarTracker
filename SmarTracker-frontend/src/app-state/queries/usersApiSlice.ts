@@ -15,8 +15,12 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
         };
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data: accessToken } = await queryFulfilled;
-        dispatch(setCredentials({ accessToken }));
+        try {
+          const { data: accessToken } = await queryFulfilled;
+          dispatch(setCredentials({ accessToken }));
+        } catch (error: any) {
+          throw Error(error.error.data.message);
+        }
       }
     })
   })

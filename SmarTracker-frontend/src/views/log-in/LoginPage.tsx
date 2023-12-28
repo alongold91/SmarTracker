@@ -1,12 +1,9 @@
-import React from 'react';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { Button, Checkbox, Flex, Form, Input } from 'antd';
-import style from './Loginpage.module.css';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import { useLazyLoginQuery } from '../../app-state/queries/usersApiSlice';
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
+import style from './Loginpage.module.css';
 
 type FieldType = {
   email: string;
@@ -14,22 +11,64 @@ type FieldType = {
   remember: boolean;
 };
 
+interface ErrorData {
+  status: number;
+  message: string;
+}
+
 const LoginPage = () => {
   const [loginTrigger, result] = useLazyLoginQuery();
 
-  const onFinish = (values: FieldType) => {
-    loginTrigger({ email: values.email, password: values.password });
+  const navigate = useNavigate();
+
+  const { error, isSuccess } = result;
+
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (error) {
+      if (
+        ((error as FetchBaseQueryError).data as ErrorData).message ===
+        'Incorrect password'
+      ) {
+        form.setFields([
+          {
+            name: 'password',
+            errors: ['Incorrect password']
+          }
+        ]);
+      }
+      if (
+        ((error as FetchBaseQueryError).data as ErrorData).message ===
+        'Incorrect email'
+      ) {
+        form.setFields([
+          {
+            name: 'email',
+            errors: ['Incorrect email']
+          }
+        ]);
+      }
+    }
+
+    if (isSuccess) {
+      navigate('/dashboard/summary');
+    }
+  }, [error, isSuccess]);
+
+  const onFinish = async (values: FieldType) => {
+    await loginTrigger({ email: values.email, password: values.password });
   };
 
   return (
     <section className={style.section}>
       <Form
+        form={form}
         name='basic'
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete='off'
         className={style.form}
       >
@@ -37,26 +76,34 @@ const LoginPage = () => {
         <Form.Item<FieldType>
           label='Email'
           name='email'
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[
+            { required: true, message: 'Please enter your email!' },
+            { type: 'email', message: 'Please enter a valid email' }
+          ]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item<FieldType>
+          shouldUpdate
           label='Password'
           name='password'
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          validateTrigger='onSubmit'
+          rules={[{ required: true, message: 'Please enter your password!' }]}
         >
           <Input.Password />
         </Form.Item>
         <Flex className={style['bottom-flex-container']} vertical gap='0.5rem'>
           <p className='body2'>
             <span>Do not have an account? </span>
-            <Link to='/' style={{ fontWeight: 'bold' }}>
-              click here
-            </Link>
+            <Link to='/'>click here</Link>
           </p>
-          <button className='body2'>Forgot my password</button>
+          <button
+            className='body2'
+            onClick={() => navigate('/forgot-password')}
+          >
+            Forgot my password
+          </button>
         </Flex>
         <Form.Item<FieldType>
           name='remember'
