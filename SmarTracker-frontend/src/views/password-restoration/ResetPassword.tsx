@@ -1,19 +1,26 @@
 import { Button, Flex, Form, Input } from 'antd';
 import style from './PasswordRestoration.module.css';
 import React from 'react';
+import PrimaryButton from '../../components/buttons/PrimaryButton';
+import SecondaryButton from '../../components/buttons/SecondaryButton';
 
-interface FieldType  {
-    choose_password: string;
-    confirm_password: string;
-  };
+interface FieldType {
+  choose_password: string;
+  confirm_password: string;
+}
 
 const handleSubmit = (values: FieldType) => {
-    console.log(values);
-}
+  console.log(values);
+};
 
 const ResetPassword = () => {
   return (
-    <Flex component='section' justify='center' align='center' className={style.section}>
+    <Flex
+      component='section'
+      justify='center'
+      align='center'
+      className={style.section}
+    >
       <Form
         name='basic'
         labelCol={{ span: 8 }}
@@ -38,27 +45,30 @@ const ResetPassword = () => {
           name='confirm_password'
           validateTrigger='onSubmit'
           dependencies={['choose_password']}
-          rules={[{ required: true, message: 'Please confirm your password!' }, 
-            ({getFieldValue}) => ({
-                validator(_, value) {
-                    if (!value || getFieldValue('choose_password') === value) {
-                        return Promise.resolve();
-                    }
-                    return Promise.reject(
-                        'The two passwords that you entered do not match.'
-                      );
+          rules={[
+            { required: true, message: 'Please confirm your password!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('choose_password') === value) {
+                  return Promise.resolve();
                 }
+                return Promise.reject(
+                  'The two passwords that you entered do not match.'
+                );
+              }
             })
-        ]}
+          ]}
         >
           <Input.Password />
         </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 12 }} className={style['submit-button']}>
-          <Button type='primary' htmlType='submit'>
-            Reset Password
-          </Button>
-        </Form.Item>
+        <Flex justify='center' gap='1rem'>
+          <Form.Item className={style.button}>
+          <PrimaryButton buttonText='Reset Password' htmlType='submit'/>
+          </Form.Item>
+          <Form.Item className={style.button}>
+          <SecondaryButton buttonText='Go back to login screen' />
+          </Form.Item>
+        </Flex>
       </Form>
     </Flex>
   );

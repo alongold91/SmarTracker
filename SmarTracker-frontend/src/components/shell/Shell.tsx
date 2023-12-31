@@ -30,7 +30,8 @@ const Shell = () => {
           },
           components: {
             Button: {
-              primaryShadow: 'none'
+              primaryShadow: 'none',
+              defaultBg: '#FFF5EE',
             }
           }
         }}
