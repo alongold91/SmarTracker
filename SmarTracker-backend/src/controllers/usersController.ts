@@ -18,8 +18,8 @@ const signup = async (
     const { email, password, currency, interestedInWarnings, warningPercent } =
       userParams;
 
-      const salt = await bcrypt.genSalt();
-      const hashedPassword = await bcrypt.hash(password, salt);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = new UserModel({
       _id: new mongoose.Types.ObjectId(),
@@ -94,41 +94,78 @@ const forgotPassword = async (
   req: Request,
   res: Response
 ): Promise<Response<any, Record<string, any>> | undefined> => {
-  const {email} = req.body
+  const { email } = req.body;
   try {
     const foundUser = await UserModel.findOne({ email });
-   if (!foundUser) {
-    return res.status(404).json({ message: 'User not found' });
-   }
-   const resetToken = jwt.sign({id: foundUser._id}, process.env.RESET_TOKEN_SECRET as string, {expiresIn: '5m'});
-   const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'smartrackerapp@gmail.com',
-      pass: process.env.GENERATED_APP_PASSWORD as string
+    if (!foundUser) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  });
-  
-  const mailOptions = {
-    from: 'smartrackerapp@gmail.com',
-    to: 'alonxtaz@gmail.com',
-    subject: 'Reset Password Link',
-    text: `http://localhost:5173/reset_password/${resetToken}`
-  };
-  
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-      return res.status(500).json({ error });
-    } else {
-      return res.status(200).json({ resetToken });
-    }
-  });
+    const resetToken = jwt.sign(
+      { _id: foundUser._id },
+      process.env.RESET_TOKEN_SECRET as string,
+      { expiresIn: '5m' }
+    );
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'smartrackerapp@gmail.com',
+        pass: process.env.GENERATED_APP_PASSWORD as string
+      }
+    });
+
+    const mailOptions = {
+      from: 'smartrackerapp@gmail.com',
+      to: email,
+      subject: 'SmarTracker- Reset Password Link',
+      text: `To reset your password, please follow the link:
+    http://localhost:5173/reset-password/${resetToken}`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ error });
+      } else {
+        return res.status(200).json({ resetToken });
+      }
+    });
   } catch (error) {
     return res.status(500).json({ error });
   }
-  
-}
+};
+
+const resetPassword = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>> | undefined> => {
+  try {
+    const { _id, newPassword } = req.body;
+
+    if (!newPassword) {
+      return res.status(400).json({ message: 'No new password prvided' });
+    }
+
+    const foundUser = await UserModel.findOne({ _id });
+
+    if (!foundUser) return res.sendStatus(403);
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    foundUser.set({
+      ...foundUser,
+      hashedPassword
+    });
+
+    await foundUser.save();
+
+    return res
+      .status(200)
+      .json({ message: `User's password was successfully updated` });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
 
 const refreshToken = async (
   req: Request,
@@ -143,20 +180,22 @@ const refreshToken = async (
 
   if (!foundUser) return res.sendStatus(403); //Forbidden
 
-
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, decoded: any) => {
-    if (err || foundUser._id !== decoded._id) {
-      return res.sendStatus(403);
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET as string,
+    (err: any, decoded: any) => {
+      if (err || foundUser._id !== decoded._id) {
+        return res.sendStatus(403);
+      }
+      const newAccessToken = jwt.sign(
+        { username: decoded.username },
+        process.env.ACCESS_TOKEN_SECRET as string,
+        { expiresIn: '5m' }
+      );
+      return res.json({ newAccessToken });
     }
-    const newAccessToken = jwt.sign(
-      { username: decoded.username },
-      process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '5m' }
-    );
-    return res.json({ newAccessToken });
-  });
+  );
 };
-
 
 const readUser = async (
   req: Request,
@@ -229,5 +268,14 @@ const deleteUser = async (
   }
 };
 
-export { deleteUser, login, refreshToken, readAllUsers, readUser, signup, updateUser, forgotPassword };
-
+export {
+  deleteUser,
+  login,
+  refreshToken,
+  readAllUsers,
+  readUser,
+  signup,
+  updateUser,
+  forgotPassword,
+  resetPassword
+};

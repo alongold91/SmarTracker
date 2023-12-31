@@ -85,7 +85,6 @@ const LoginPage = () => {
         </Form.Item>
 
         <Form.Item<FieldType>
-          shouldUpdate
           label='Password'
           name='password'
           validateTrigger='onSubmit'

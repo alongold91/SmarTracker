@@ -6,7 +6,8 @@ import ExpenseTable from '../../views/expense-table/ExpenseTable';
 import UserSettings from '../../views/user-settings/UserSettings';
 import LoginPage from '../../views/log-in/LoginPage';
 import { ConfigProvider } from 'antd';
-import ForgotPassword from '../../views/forgot-password/ForgotPassword';
+import ForgotPassword from '../../views/password-restoration/ForgotPassword';
+import ResetPassword from '../../views/password-restoration/ResetPassword';
 
 const Dashboard = () => {
   return (
@@ -41,6 +42,7 @@ const Shell = () => {
               element={false ? <Navigate to='/dashboard' /> : <LoginPage />}
             />
             <Route path='/forgot-password' element={<ForgotPassword />}/>
+            <Route path='/reset-password/:token' element={<ResetPassword />}/>
             <Route path='/dashboard' element={<Dashboard />}>
               <Route path='summary' element={<SummaryPage />} />
               <Route path='expenses'>
