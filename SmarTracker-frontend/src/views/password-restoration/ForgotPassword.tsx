@@ -3,6 +3,7 @@ import style from './PasswordRestoration.module.css';
 import React, { useEffect, useState } from 'react';
 import { useForgotPasswordMutation } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
 import EmailSent from './EmailSent';
+import AnimatedText from '../../components/animated-text/AnimatedText';
 
 type FieldType = {
   email: string;
@@ -33,6 +34,12 @@ const ForgotPassword = () => {
   if (emailSent) {
     return (
       <EmailSent />
+    )
+  }
+
+  if (true) {
+    return (
+      <AnimatedText text='Hello everybody' repeatDelay={1500} />
     )
   }
 
