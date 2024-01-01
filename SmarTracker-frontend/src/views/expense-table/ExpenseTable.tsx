@@ -1,4 +1,4 @@
-import { useGetExpensesByUserIdQuery } from '../../app-state/queries/expensesApiSlice';
+import { useGetExpensesByUserIdQuery } from '../../app-state/slices/rtk-query-slices/expensesApiSlice';
 import MoreInfoMenu from '../../components/more-info-menu/MoreInfoMenu';
 import withTransition from '../../components/transitions/withTransition';
 import style from './ExpenseTable.module.css';

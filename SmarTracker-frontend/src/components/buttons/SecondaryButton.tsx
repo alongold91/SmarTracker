@@ -1,17 +1,19 @@
-import { Button, ButtonProps } from 'antd';
+import { Button } from 'antd';
 import React from 'react';
 
 interface SecondaryButtonProps {
   buttonText: string;
   icon?: React.ReactNode;
+  onClick: () => void;
 }
 
 const SecondaryButton = ({
   buttonText,
-  icon
+  icon,
+  onClick
 }: SecondaryButtonProps) => {
   return (
-    <Button type='default' htmlType='button' icon={icon}>
+    <Button type='default' htmlType='button' icon={icon} onClick={onClick}>
       {buttonText}
     </Button>
   );

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import RootApiSlice from './queries/rootApiSlice';
+import RootApiSlice from './slices/rtk-query-slices/rootApiSlice';
 import loggedinUserSlice from './slices/loggedinUserSlice';
 
 

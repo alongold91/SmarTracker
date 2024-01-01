@@ -8,6 +8,7 @@ import LoginPage from '../../views/log-in/LoginPage';
 import { ConfigProvider } from 'antd';
 import ForgotPassword from '../../views/password-restoration/ForgotPassword';
 import ResetPassword from '../../views/password-restoration/ResetPassword';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
   return (
@@ -20,6 +21,10 @@ const Dashboard = () => {
 
 const Shell = () => {
   const location = useLocation();
+
+  const loggedInUserToken = useSelector((state: any) => state.loggedinUser.token);
+  const userLoggedIn: boolean = Boolean(loggedInUserToken) ;
+
   return (
     <>
       <ConfigProvider
@@ -40,8 +45,9 @@ const Shell = () => {
           <Routes location={location} key={location.pathname}>
             <Route
               path='/'
-              element={false ? <Navigate to='/dashboard' /> : <LoginPage />}
+              element={userLoggedIn ? <Navigate to='/dashboard' /> : <Navigate to='/login'/>}
             />
+            <Route path='/login' element={<LoginPage />} />
             <Route path='/forgot-password' element={<ForgotPassword />}/>
             <Route path='/reset-password/:token' element={<ResetPassword />}/>
             <Route path='/dashboard' element={<Dashboard />}>

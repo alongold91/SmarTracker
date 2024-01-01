@@ -101,7 +101,7 @@ const forgotPassword = async (
       return res.status(404).json({ message: 'User not found' });
     }
     const resetToken = jwt.sign(
-      { _id: foundUser._id },
+      { email: foundUser.email },
       process.env.RESET_TOKEN_SECRET as string,
       { expiresIn: '5m' }
     );
@@ -123,7 +123,6 @@ const forgotPassword = async (
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error);
         return res.status(500).json({ error });
       } else {
         return res.status(200).json({ resetToken });
@@ -139,13 +138,13 @@ const resetPassword = async (
   res: Response
 ): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
-    const { _id, newPassword } = req.body;
+    const {email, newPassword } = req.body;
 
     if (!newPassword) {
       return res.status(400).json({ message: 'No new password prvided' });
     }
 
-    const foundUser = await UserModel.findOne({ _id });
+    const foundUser = await UserModel.findOne({ email });
 
     if (!foundUser) return res.sendStatus(403);
 
@@ -154,7 +153,7 @@ const resetPassword = async (
 
     foundUser.set({
       ...foundUser,
-      hashedPassword
+      password: hashedPassword
     });
 
     await foundUser.save();

@@ -1,8 +1,8 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { Button, Checkbox, Flex, Form, Input } from 'antd';
 import { useEffect } from 'react';
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { useLazyLoginQuery } from '../../app-state/queries/usersApiSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLoginMutation } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
 import style from './Loginpage.module.css';
 
 type FieldType = {
@@ -17,11 +17,9 @@ interface ErrorData {
 }
 
 const LoginPage = () => {
-  const [loginTrigger, result] = useLazyLoginQuery();
+  const [login, {error, isSuccess}] = useLoginMutation();
 
   const navigate = useNavigate();
-
-  const { error, isSuccess } = result;
 
   const [form] = Form.useForm();
 
@@ -56,8 +54,8 @@ const LoginPage = () => {
     }
   }, [error, isSuccess]);
 
-  const onFinish = async (values: FieldType) => {
-    await loginTrigger({ email: values.email, password: values.password });
+  const onFinish = (values: FieldType) => {
+     login({ email: values.email, password: values.password });
   };
 
   return (

@@ -35,7 +35,7 @@ const verifyResetToken = (req: Request, res: Response, next: NextFunction) => {
       if (err) {
         return res.sendStatus(403);
       }
-      if (decoded) req.body._id = (decoded as JwtPayload)._id;
+      if (decoded) req.body.email = (decoded as JwtPayload).email;
       next();
     }
   );
