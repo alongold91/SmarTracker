@@ -27,7 +27,7 @@ const ForgotPassword = () => {
 
   if (isLoading) {
     return (
-      <h6>Loading...</h6>
+      <AnimatedText text='Sending...' repeatDelay={1200} repeatTimes={10} />
     )
   }
 
@@ -37,11 +37,6 @@ const ForgotPassword = () => {
     )
   }
 
-  if (true) {
-    return (
-      <AnimatedText text='Hello everybody' repeatDelay={1500} />
-    )
-  }
 
   return (
     <Flex

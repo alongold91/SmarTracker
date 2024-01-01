@@ -6,8 +6,8 @@ interface AnimatedTextProps {
   text: string | string[];
   el?: keyof JSX.IntrinsicElements;
   className?: string;
-  once?: boolean;
   repeatDelay?: number;
+  repeatTimes?: number;
 }
 
 const defaultAnimations = {
@@ -25,13 +25,13 @@ const AnimatedText = ({
   text,
   el: Wrapper = 'p',
   className,
-  once,
-  repeatDelay
+  repeatDelay,
+  repeatTimes = 0
 }: AnimatedTextProps) => {
   const controls = useAnimation();
   const textArray = Array.isArray(text) ? text : [text];
   const ref = useRef(null);
-  const inView = useInView(ref, { amount: 0.5, once });
+  const inView = useInView(ref, { amount: 0.5 });
 
   useEffect(() => {
     let timeout;
@@ -39,8 +39,10 @@ const AnimatedText = ({
       controls.start('visible');
       if (repeatDelay) {
         timeout = setTimeout(async () => {
-          await controls.start('hidden');
-          controls.start('visible');
+          for (let i = 0; i < repeatTimes; i++) {
+            await controls.start('hidden');
+            await controls.start('visible');
+          }
         }, repeatDelay);
       }
     };
