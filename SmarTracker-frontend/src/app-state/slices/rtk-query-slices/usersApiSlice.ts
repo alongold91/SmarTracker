@@ -1,3 +1,4 @@
+import { Alert } from 'antd';
 import { setCredentials } from '../loggedinUserSlice';
 import RootApiSlice from './rootApiSlice';
 
@@ -33,6 +34,21 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
       }),
       // We don't need to invalidate cache after this action, nothing in the database changes
   }),
+  refreshToken: builder.query<{accessToken: string}, void> ({
+    query: () => ({
+      url: 'users/refreshtoken',
+      method: 'GET',
+    }),
+    async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      try {
+        console.log('inside refreshToken onQueryStarted');
+        const { data } = await queryFulfilled;
+        dispatch(setCredentials({ accessToken: data.accessToken }));
+      } catch (error: any) {
+        throw Error(error.error.data.message);
+      }
+    },
+}),
     resetPassword: builder.mutation<void, {resetToken: string, newPassword: string}> ({
         query: (args) => ({
           url: 'users/reset-password',
@@ -46,4 +62,4 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
   })
 });
 
-export const { useLoginMutation, useForgotPasswordMutation, useResetPasswordMutation } = UsersApiSlice;
+export const { useLoginMutation, useForgotPasswordMutation, useRefreshTokenQuery , useResetPasswordMutation } = UsersApiSlice;

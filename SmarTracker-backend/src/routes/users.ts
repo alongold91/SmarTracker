@@ -3,6 +3,7 @@ import {
  signup,
  login,
  refreshToken,
+ logout,
  readUser,
  readAllUsers,
  updateUser,
@@ -19,7 +20,8 @@ router.post('/signup', ValidateSchema(Schemas.user.create), signup);
 router.post('/login', login);
 router.put('/forgot-password', forgotPassword);
 router.put('/reset-password', verifyResetToken, resetPassword);
-router.get('/refreshtoken', refreshToken)
+router.get('/refreshtoken', refreshToken);
+router.patch('/logout', logout);
 router.get('/:userId', readUser); 
 router.get('/', readAllUsers);
 router.patch('/update/:userId', ValidateSchema(Schemas.user.update), updateUser);

@@ -76,7 +76,7 @@ const login = async (
         res.cookie('jwt', refreshToken, {
           httpOnly: true,
           sameSite: 'none',
-          secure: false,
+          secure: true,
           maxAge: 24 * 60 * 60 * 1000 // max age is 24 hours
         });
 
@@ -187,7 +187,7 @@ const refreshToken = async (
         return res.sendStatus(403);
       }
       const newAccessToken = jwt.sign(
-        { username: decoded.username },
+        { _id: decoded._id },
         process.env.ACCESS_TOKEN_SECRET as string,
         { expiresIn: '5m' }
       );
@@ -195,6 +195,30 @@ const refreshToken = async (
     }
   );
 };
+
+const logout = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>> | undefined> => {
+
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.sendStatus(204); 
+  const refreshToken = cookies.jwt;
+
+  const foundUser = await UserModel.findOne({ refreshToken });
+
+  if (!foundUser) {
+    res.clearCookie('jwt', {httpOnly: true, sameSite: 'none', secure: true});
+    return res.sendStatus(204); 
+  }
+
+  foundUser.refreshToken = '';
+  await foundUser.save();
+  res.clearCookie('jwt', {httpOnly: true, sameSite: 'none', secure: true});
+  return res.sendStatus(204); 
+};
+
 
 const readUser = async (
   req: Request,
@@ -271,6 +295,7 @@ export {
   deleteUser,
   login,
   refreshToken,
+  logout,
   readAllUsers,
   readUser,
   signup,

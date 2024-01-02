@@ -44,11 +44,12 @@ const StartServer = () => {
 
   /** Rules of our API */
   router.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
     res.header(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     );
+    res.header('Access-Control-Allow-Credentials', 'true');
 
     if (req.method == 'OPTIONS') {
       res.header(
