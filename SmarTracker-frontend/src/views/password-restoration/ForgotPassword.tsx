@@ -1,9 +1,9 @@
-import { Input, Form, Button, Flex } from 'antd';
-import style from './PasswordRestoration.module.css';
-import React, { useEffect, useState } from 'react';
+import { Button, Flex, Form, Input } from 'antd';
+import { useEffect, useState } from 'react';
 import { useForgotPasswordMutation } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
+import DescriptiveLoader from '../../components/loaders/DescriptiveLoader';
 import EmailSent from './EmailSent';
-import AnimatedText from '../../components/animated-text/AnimatedText';
+import style from './PasswordRestoration.module.css';
 
 type FieldType = {
   email: string;
@@ -22,21 +22,29 @@ const ForgotPassword = () => {
   }, [resetPasswordSent]);
 
   const handleSubmit = (values: FieldType) => {
-     sendResetPasswordEmail(values.email);
+    sendResetPasswordEmail(values.email);
   };
 
   if (isLoading) {
     return (
-      <AnimatedText text='Sending...' repeatDelay={1200} repeatTimes={10} />
-    )
+      <Flex
+        align='center'
+        justify='center'
+        className={style['forgot-password-loading-container']}
+      >
+        <DescriptiveLoader
+          text='Sending...'
+          size='large'
+          whileCondition={isLoading}
+          repeatDelay={1200}
+        />
+      </Flex>
+    );
   }
 
   if (emailSent) {
-    return (
-      <EmailSent />
-    )
+    return <EmailSent />;
   }
-
 
   return (
     <Flex

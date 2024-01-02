@@ -9,3 +9,11 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}

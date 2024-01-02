@@ -7,7 +7,7 @@ interface AnimatedTextProps {
   el?: keyof JSX.IntrinsicElements;
   className?: string;
   repeatDelay?: number;
-  repeatTimes?: number;
+  whileCondition?: boolean;
 }
 
 const defaultAnimations = {
@@ -26,7 +26,7 @@ const AnimatedText = ({
   el: Wrapper = 'p',
   className,
   repeatDelay,
-  repeatTimes = 0
+  whileCondition = false
 }: AnimatedTextProps) => {
   const controls = useAnimation();
   const textArray = Array.isArray(text) ? text : [text];
@@ -39,7 +39,7 @@ const AnimatedText = ({
       controls.start('visible');
       if (repeatDelay) {
         timeout = setTimeout(async () => {
-          for (let i = 0; i < repeatTimes; i++) {
+          while (whileCondition) {
             await controls.start('hidden');
             await controls.start('visible');
           }
@@ -69,18 +69,19 @@ const AnimatedText = ({
         aria-hidden
       >
         {textArray.map((line) => (
-          <span style={{ display: 'block' }}>
-            {line.split(' ').map((word) => (
-              <span style={{ display: 'inline-block' }}>
-                {word.split('').map((char) => (
+          <span className={style.block}>
+            {line.split(' ').map((word, wordIndex) => (
+              <span className={style['inline-block']} key={`${word}-${wordIndex}`}>
+                {word.split('').map((char, charIndex) => (
                   <motion.span
-                    style={{ display: 'inline-block' }}
+                    className={style['inline-block']}
                     variants={defaultAnimations}
+                    key={`${char}-${charIndex}`}
                   >
                     {char}
                   </motion.span>
                 ))}
-                <span style={{ display: 'inline-block' }}>&nbsp;</span>
+                <span className={style['inline-block']}>&nbsp;</span>
               </span>
             ))}
           </span>
