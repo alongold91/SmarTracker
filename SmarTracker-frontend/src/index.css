@@ -88,6 +88,11 @@ ul {
   list-style-type: none;
 }
 
+.full-screen-size {
+  height: 100vh;
+  width: 100vw;
+}
+
 
 /* @media (prefers-color-scheme: light) {
   :root {

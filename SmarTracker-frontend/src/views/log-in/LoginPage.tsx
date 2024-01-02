@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
 import style from './Loginpage.module.css';
+import DescriptiveLoader from '../../components/loaders/DescriptiveLoader';
 
 type FieldType = {
   email: string;
@@ -17,7 +18,7 @@ interface ErrorData {
 }
 
 const LoginPage = () => {
-  const [login, {error, isSuccess}] = useLoginMutation();
+  const [login, {error, isSuccess, isLoading}] = useLoginMutation();
 
   const navigate = useNavigate();
 
@@ -57,6 +58,25 @@ const LoginPage = () => {
   const onFinish = (values: FieldType) => {
      login({ email: values.email, password: values.password });
   };
+
+  if (isLoading) {
+    return (
+      <Flex
+        align='center'
+        justify='center'
+        className='full-screen-size'
+      >
+        <DescriptiveLoader
+          text='connecting...'
+          size='large'
+          whileCondition={isLoading}
+          repeatDelay={1200}
+        />
+      </Flex>
+    );
+  }
+
+
 
   return (
     <section className={style.section}>

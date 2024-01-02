@@ -19,6 +19,7 @@ const ForgotPassword = () => {
     if (resetPasswordSent) {
       setEmailSent(true);
     }
+    
   }, [resetPasswordSent]);
 
   const handleSubmit = (values: FieldType) => {
@@ -30,7 +31,7 @@ const ForgotPassword = () => {
       <Flex
         align='center'
         justify='center'
-        className={style['forgot-password-loading-container']}
+        className='full-screen-size'
       >
         <DescriptiveLoader
           text='Sending...'

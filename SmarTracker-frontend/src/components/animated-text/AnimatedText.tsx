@@ -41,7 +41,7 @@ const AnimatedText = ({
         timeout = setTimeout(async () => {
           while (whileCondition) {
             await controls.start('hidden');
-            await controls.start('visible');
+            controls.start('visible');
           }
         }, repeatDelay);
       }
@@ -68,10 +68,13 @@ const AnimatedText = ({
         }}
         aria-hidden
       >
-        {textArray.map((line) => (
-          <span className={style.block}>
+        {textArray.map((line, lineIndex) => (
+          <span className={style.block} key={`${line}-${lineIndex}`}>
             {line.split(' ').map((word, wordIndex) => (
-              <span className={style['inline-block']} key={`${word}-${wordIndex}`}>
+              <span
+                className={style['inline-block']}
+                key={`${word}-${wordIndex}`}
+              >
                 {word.split('').map((char, charIndex) => (
                   <motion.span
                     className={style['inline-block']}
