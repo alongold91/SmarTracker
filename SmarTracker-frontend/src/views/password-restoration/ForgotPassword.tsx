@@ -56,7 +56,7 @@ const ForgotPassword = () => {
       <Form
         name='basic'
         labelCol={{ span: 3 }}
-        style={{ width: '30%' }}
+        style={{ width: '36%' }}
         initialValues={{ remember: true }}
         onFinish={handleSubmit}
         autoComplete='off'
