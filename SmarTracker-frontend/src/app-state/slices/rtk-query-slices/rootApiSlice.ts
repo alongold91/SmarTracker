@@ -4,7 +4,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:8080',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as any).loggedinUser.token;
+    const token = (getState() as any).loggedinUser.token; //TODO: add redux types and remove this
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
     }
