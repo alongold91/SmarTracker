@@ -1,5 +1,4 @@
-import { Alert } from 'antd';
-import { setCredentials } from '../loggedinUserSlice';
+import { setCredentials, logout } from '../loggedinUserSlice';
 import RootApiSlice from './rootApiSlice';
 
 const UsersApiSlice = RootApiSlice.injectEndpoints({
@@ -23,6 +22,26 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
         }
       },
       invalidatesTags: ['Users']
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: '/users/logout',
+        method: 'PATCH'
+      }),
+      async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        console.log('onQueryStarted logout')
+        try {
+          const { meta } = await queryFulfilled;
+
+          if ((meta && meta.response && meta?.response.status) === 204) {
+            console.log('meta here')
+            dispatch(logout());
+            dispatch(RootApiSlice.util.resetApiState());
+          }
+        } catch (error: any) {
+          throw Error(error.error.data.message);
+        }
+      }
     }),
     forgotPassword: builder.mutation<void, string> ({
       query: (email) => ({
@@ -61,4 +80,4 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
   })
 });
 
-export const { useLoginMutation, useForgotPasswordMutation, useRefreshTokenMutation , useResetPasswordMutation } = UsersApiSlice;
+export const { useLoginMutation, useLogoutMutation, useForgotPasswordMutation, useRefreshTokenMutation , useResetPasswordMutation } = UsersApiSlice;
