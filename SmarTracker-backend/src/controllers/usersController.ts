@@ -44,7 +44,7 @@ const login = async (
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
-    const { email, password } = req.body;
+    const { email, password, trustsDevice } = req.body;
 
     if (!email || !password) {
       return res
@@ -66,7 +66,8 @@ const login = async (
         const refreshToken = jwt.sign(
           { _id: user._id },
           process.env.REFRESH_TOKEN_SECRET as string,
-          { expiresIn: '1d' }
+           //if user marked that they trust the device make the jwt token last a year, otherwise a day.
+          { expiresIn: trustsDevice ?  '365d' : '1d' }
         );
 
         user.refreshToken = refreshToken;
@@ -77,7 +78,8 @@ const login = async (
           httpOnly: true,
           sameSite: 'none',
           secure: true,
-          maxAge: 24 * 60 * 60 * 1000 // max age is 24 hours
+           //if user marked that they trust the device make the jwt token last a year, otherwise a day.
+          maxAge: trustsDevice ? 365 * 24 * 60 * 60 * 1000 :  24 * 60 * 60 * 1000
         });
 
         return res.status(200).json({ accessToken });
@@ -186,12 +188,12 @@ const refreshToken = async (
       if (err || foundUser._id !== decoded._id) {
         return res.sendStatus(403);
       }
-      const newAccessToken = jwt.sign(
+      const accessToken = jwt.sign(
         { _id: decoded._id },
         process.env.ACCESS_TOKEN_SECRET as string,
         { expiresIn: '5m' }
       );
-      return res.json({ newAccessToken });
+      return res.json({ accessToken });
     }
   );
 };

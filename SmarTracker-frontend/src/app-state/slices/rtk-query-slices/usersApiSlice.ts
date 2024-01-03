@@ -4,7 +4,7 @@ import RootApiSlice from './rootApiSlice';
 
 const UsersApiSlice = RootApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<{accessToken: string}, { email: string; password: string }>({
+    login: builder.mutation<{accessToken: string}, { email: string; password: string, trustsDevice: boolean }>({
       query: (credentials) => {
         return {
           url: 'users/login',
@@ -34,14 +34,13 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
       }),
       // We don't need to invalidate cache after this action, nothing in the database changes
   }),
-  refreshToken: builder.query<{accessToken: string}, void> ({
+  refreshToken: builder.mutation<{accessToken: string}, void> ({
     query: () => ({
       url: 'users/refreshtoken',
       method: 'GET',
     }),
     async onQueryStarted(_, { dispatch, queryFulfilled }) {
       try {
-        console.log('inside refreshToken onQueryStarted');
         const { data } = await queryFulfilled;
         dispatch(setCredentials({ accessToken: data.accessToken }));
       } catch (error: any) {
@@ -62,4 +61,4 @@ const UsersApiSlice = RootApiSlice.injectEndpoints({
   })
 });
 
-export const { useLoginMutation, useForgotPasswordMutation, useRefreshTokenQuery , useResetPasswordMutation } = UsersApiSlice;
+export const { useLoginMutation, useForgotPasswordMutation, useRefreshTokenMutation , useResetPasswordMutation } = UsersApiSlice;

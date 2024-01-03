@@ -1,6 +1,6 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { Button, Checkbox, Flex, Form, Input } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
 import style from './Loginpage.module.css';
@@ -9,7 +9,7 @@ import DescriptiveLoader from '../../components/loaders/DescriptiveLoader';
 type FieldType = {
   email: string;
   password: string;
-  remember: boolean;
+  trust: boolean;
 };
 
 interface ErrorData {
@@ -19,6 +19,8 @@ interface ErrorData {
 
 const LoginPage = () => {
   const [login, {error, isSuccess, isLoading}] = useLoginMutation();
+
+  const [trustsDevice, setTrustsDevice] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -52,11 +54,18 @@ const LoginPage = () => {
 
     if (isSuccess) {
       navigate('/dashboard/summary');
+      if (trustsDevice) {
+        localStorage.setItem('Persistent', 'true');
+      }
+      else {
+        sessionStorage.setItem('inSession', 'true');
+      }
     }
   }, [error, isSuccess]);
 
   const onFinish = (values: FieldType) => {
-     login({ email: values.email, password: values.password });
+    setTrustsDevice(values.trust)
+     login({ email: values.email, password: values.password, trustsDevice: values.trust });
   };
 
   if (isLoading) {
@@ -85,7 +94,7 @@ const LoginPage = () => {
         name='basic'
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
+        initialValues={{ trust: false }}
         onFinish={onFinish}
         autoComplete='off'
         className={style.form}
@@ -123,11 +132,11 @@ const LoginPage = () => {
           </button>
         </Flex>
         <Form.Item<FieldType>
-          name='remember'
+          name='trust'
           valuePropName='checked'
           wrapperCol={{ offset: 6, span: 16 }}
         >
-          <Checkbox>Remember me for 30 days</Checkbox>
+          <Checkbox>I trust this device</Checkbox>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

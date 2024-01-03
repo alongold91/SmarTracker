@@ -5,11 +5,9 @@ import style from './SummaryPage.module.css';
 import PieChart from '../../components/charts/PieChart';
 import BarChart from '../../components/charts/BarChart';
 import withTransition from '../../components/transitions/withTransition';
-import { useRefreshTokenQuery } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
 
 const SummaryPage = () => {
-  const {data} = useRefreshTokenQuery();
-console.log('data ---> ', data)
+
   return (
     <Flex className={style.mainContainer} gap='10rem'>
       <Flex vertical gap='1rem'>
