@@ -1,18 +1,21 @@
+import { Flex } from 'antd';
+import { useEffect, useMemo } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useLogoutMutation,
   useRefreshTokenMutation
 } from '../../app-state/slices/rtk-query-slices/usersApiSlice';
-import { useEffect, useMemo } from 'react';
-import { Flex } from 'antd';
 import DescriptiveLoader from '../loaders/DescriptiveLoader';
 import Navbar from '../navigation-bar/Navbar';
+
+let initialRender = true;
 
 const Dashboard = () => {
   const [logout, { error, isLoading: isLoggingOut }] = useLogoutMutation();
   const [refreshToken, { isLoading: isRefreshingToken }] =
     useRefreshTokenMutation();
   const navigate = useNavigate();
+
 
   const isPersist = localStorage.getItem('persist') !== null;
   const isInSession = sessionStorage.getItem('inSession') !== null;
@@ -21,7 +24,6 @@ const Dashboard = () => {
     () => !isPersist && !isInSession,
     [isPersist, isInSession]
   );
-  
 
   useEffect(() => {
     const handleLogout = async () => {
@@ -37,9 +39,12 @@ const Dashboard = () => {
         console.log('Token refreshed');
       }
     };
-
-    handleLogout();
-  }, [shouldLogout]);
+    if (initialRender) {
+      initialRender = false;
+      handleLogout();
+    }
+   
+  }, [initialRender]);
 
   if (isLoggingOut || isRefreshingToken) {
     return (

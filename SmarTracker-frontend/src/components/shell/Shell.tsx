@@ -1,14 +1,9 @@
 import { ConfigProvider } from 'antd';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import {
-  Navigate,
-  Outlet,
   Route,
   Routes,
-  useLocation,
-  useNavigate
+  useLocation
 } from 'react-router-dom';
 import ExpenseTable from '../../views/expense-table/ExpenseTable';
 import LoginPage from '../../views/log-in/LoginPage';
