@@ -1,5 +1,5 @@
 import { Flex } from 'antd';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useLogoutMutation,
@@ -16,7 +16,6 @@ const Dashboard = () => {
     useRefreshTokenMutation();
   const navigate = useNavigate();
 
-
   const isPersist = localStorage.getItem('persist') !== null;
   const isInSession = sessionStorage.getItem('inSession') !== null;
 
@@ -25,26 +24,23 @@ const Dashboard = () => {
     [isPersist, isInSession]
   );
 
-  useEffect(() => {
-    const handleLogout = async () => {
-      if (shouldLogout) {
-        await logout();
-        console.log('logging out');
-        if (!error) {
-          // Use Navigate after the asynchronous logout is completed
-          navigate('/login');
-        }
-      } else {
-        refreshToken();
-        console.log('Token refreshed');
+  const handleLogout = useCallback(async () => {
+    if (shouldLogout) {
+      await logout();
+      if (!error) {
+        navigate('/login');
       }
-    };
+    } else {
+      refreshToken();
+    }
+  }, []);
+
+  useEffect(() => {
     if (initialRender) {
       initialRender = false;
       handleLogout();
     }
-   
-  }, [initialRender]);
+  }, []);
 
   if (isLoggingOut || isRefreshingToken) {
     return (
