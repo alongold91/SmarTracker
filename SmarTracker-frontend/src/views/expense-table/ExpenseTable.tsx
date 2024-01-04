@@ -5,7 +5,12 @@ import style from './ExpenseTable.module.css';
 
 const ExpenseTable = () => {
   const { data, isLoading, isError } = useGetExpensesByUserIdQuery(
-    '6579ebefb0d6a56203f28971'
+    '658dc71384b517993cfa5b23',
+    {
+      pollingInterval: 25000,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true
+    }
   );
 
   if (isLoading) {

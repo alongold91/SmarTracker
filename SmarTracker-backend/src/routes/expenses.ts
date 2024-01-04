@@ -8,9 +8,11 @@ import {
   updateExpense
 } from '../controllers/expensesController';
 import { Schemas, ValidateSchema } from '../middleware/validate-schema';
+import { verifyAccessToken } from '../middleware/verifyJWT';
 
 const router = express.Router();
 
+router.use(verifyAccessToken);
 router.post('/create', ValidateSchema(Schemas.expense.create), createExpense);
 router.get('/:expenseId', readExpense);
 router.get('/', readAllExpenses);

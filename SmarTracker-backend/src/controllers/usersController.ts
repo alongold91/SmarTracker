@@ -61,13 +61,13 @@ const login = async (
         const accessToken = jwt.sign(
           { _id: user._id },
           process.env.ACCESS_TOKEN_SECRET as string,
-          { expiresIn: '5m' }
+          { expiresIn: '20s' }
         );
         const refreshToken = jwt.sign(
           { _id: user._id },
           process.env.REFRESH_TOKEN_SECRET as string,
            //if user marked that they trust the device make the jwt token last a year, otherwise a day.
-          { expiresIn: trustsDevice ?  '365d' : '1d' }
+          { expiresIn: '50s' }
         );
 
         user.refreshToken = refreshToken;
@@ -79,7 +79,7 @@ const login = async (
           sameSite: 'none',
           secure: true,
            //if user marked that they trust the device make the jwt token last a year, otherwise a day.
-          maxAge: trustsDevice ? 365 * 24 * 60 * 60 * 1000 :  24 * 60 * 60 * 1000
+          maxAge: 50 * 1000
         });
 
         return res.status(200).json({ accessToken });
@@ -191,7 +191,7 @@ const refreshToken = async (
       const accessToken = jwt.sign(
         { _id: decoded._id },
         process.env.ACCESS_TOKEN_SECRET as string,
-        { expiresIn: '5m' }
+        { expiresIn: '20s' }
       );
       return res.json({ accessToken });
     }
