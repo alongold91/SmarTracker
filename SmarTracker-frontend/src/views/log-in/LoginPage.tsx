@@ -55,7 +55,7 @@ const LoginPage = () => {
     if (isSuccess) {
       navigate('/dashboard/summary');
       if (trustsDevice) {
-        localStorage.setItem('persistent', 'true');
+        localStorage.setItem('persist', 'true');
       }
       else {
         sessionStorage.setItem('inSession', 'true');
