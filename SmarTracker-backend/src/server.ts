@@ -1,25 +1,25 @@
-import express, { application } from 'express';
+import cookieParser from 'cookie-parser';
+import express from 'express';
 import http from 'http';
-import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
-import { usersRouter } from './routes/users';
 import { expensesRouter } from './routes/expenses';
-import cookieParser from 'cookie-parser';
+import { usersRouter } from './routes/users';
+import { initDB } from './utils/initDB';
 
 const router = express();
 
-/* Connect to Mongo */
+/* Initialize Database and Start Server */
+initDB()
+    .then(() => {
+        Logging.info('Database initialized successfully.');
+        StartServer();
+    })
+    .catch((error) => {
+        Logging.error(`Failed to initialize database: ${error}`);
+    });
 
-mongoose
-  .connect(config.mongo.url)
-  .then(() => {
-    Logging.info('Mongo connected successfully.');
-    StartServer();
-  })
-  .catch((error) => Logging.error(error));
-
-/** Only Start Server if Mongoose Connects */
+/** Only Start Server if DB is initialized */
 const StartServer = () => {
   /** Log the request */
   router.use((req, res, next) => {

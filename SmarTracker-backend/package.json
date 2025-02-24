@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/SmarTracker-backend/src/server.js",
     "debug": "node --inspect build/SmarTracker-backend/src/server.js",
-    "build": "rm -rf build/ && tsc"
+    "build": "rm -rf build/ && tsc",
+    "dev": "npm run build && npm start"
   },
   "keywords": [],
   "author": "",
