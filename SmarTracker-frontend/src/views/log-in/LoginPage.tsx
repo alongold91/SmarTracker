@@ -122,7 +122,7 @@ const LoginPage = () => {
         <Flex className={style['bottom-flex-container']} vertical gap='0.5rem'>
           <p className='body2'>
             <span>Do not have an account? </span>
-            <Link to='/'>click here</Link>
+            <Link to='/signup'>click here</Link>
           </p>
           <button
             className='body2'

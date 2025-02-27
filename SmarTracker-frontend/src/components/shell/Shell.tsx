@@ -12,6 +12,7 @@ import ResetPassword from '../../views/password-restoration/ResetPassword';
 import SummaryPage from '../../views/summary-page/SummaryPage';
 import UserSettings from '../../views/user-settings/UserSettings';
 import Dashboard from './Dashboard';
+import SignupPage from '../../views/sign-up/SignupPage';
 
 const Shell = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ const Shell = () => {
           <Routes location={location} key={location.pathname}>
             <Route path='/' element={<Dashboard />} />
             <Route path='/login' element={<LoginPage />} />
+            <Route path='/signup' element={<SignupPage />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
             <Route path='/dashboard' element={<Dashboard />}>

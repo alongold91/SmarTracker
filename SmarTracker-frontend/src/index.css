@@ -12,7 +12,7 @@
   --text-main-color: #2B2B28;
   --text-light-color: rgba(99, 99, 92, 0.8);
   --text-dark-color: #01011B;
-  --text-contrast-color: #FFF;
+  --text-contrast-color: #333333;
   --text-extra-bold: 800;
   --text-bold: 700;
   --text-medium: 500;
@@ -29,6 +29,7 @@
 
 html, body {
   font-size: 16px;
+  color: var(--text-main-color);
 }
 
 /*Global Typography Section */
@@ -68,6 +69,18 @@ h6 {
 
 .caption {
   font-size: 0.75rem;
+}
+
+.horizontal-align {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .ant-typography {
