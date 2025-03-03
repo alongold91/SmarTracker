@@ -4,12 +4,10 @@
 
 .form {
     max-width: 500px;
+    display: grid;
 }
 
-.grid-container {
-    background: white;
-}
-
-.test {
-    background: red;
+.select {
+    display: flex;
+    flex-direction: column;
 }
